@@ -1,0 +1,8 @@
+.git
+node_modules
+.env
+.gitignore
+eslint.config.mjs
+.prettierrc
+generated
+README.md

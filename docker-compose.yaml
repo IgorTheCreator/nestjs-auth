@@ -1,0 +1,57 @@
+services:
+  db:
+    image: bitnami/postgresql:17.5.0
+    container_name: ${DB_CONTAINER_NAME}
+    environment:
+      - POSTGRESQL_USERNAME=${DB_USERNAME}
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRESQL_DATABASE=${DB_NAME}
+    volumes:
+      - db_data_new:/bitnami/postgresql
+    ports:
+      - ${DB_PORT}:5432
+    restart: unless-stopped
+    networks:
+      - app
+
+  cache:
+    image: redis:latest
+    container_name: ${CACHE_CONTAINER_NAME}
+    restart: unless-stopped
+    environment:
+      - REDIS_PASSWORD=${CACHE_PASSWORD}
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD --maxmemory 100mb --maxmemory-policy volatile-lru"
+    ports:
+      - ${CACHE_PORT}:6379
+    volumes:
+      - cache_data:/data
+    networks:
+      - app
+
+  app:
+    container_name: ${APP_CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - app_data:/data/app
+    networks:
+      - app
+    depends_on:
+      - db
+    environment:
+      - APP_PORT=${APP_PORT}
+      - DB_URL=${DB_URL}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+
+volumes:
+  db_data_new:
+  cache_data:
+  app_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app:
