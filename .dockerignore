@@ -6,3 +6,7 @@ eslint.config.mjs
 .prettierrc
 generated
 README.md
+.env.sample
+test
+**/*spec*
+.vscode

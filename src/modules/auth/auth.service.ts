@@ -16,12 +16,10 @@ export class AuthService implements IAuthService {
 
   async signup(userAgent: string, { email, password }: CredentialsDto) {
     const existedUser = await this.usersService.findByEmail(email)
-    console.log(existedUser)
     if (existedUser) {
       throw new ConflictException('User already exists')
     }
     const user = await this.usersService.save({ email, password })
-    console.log(user)
     const accessToken = await this.tokensService.getAccessToken({ id: user.id, role: user.role })
     const refreshToken = await this.tokensService.getRefreshToken(user.id, userAgent)
 
@@ -38,7 +36,6 @@ export class AuthService implements IAuthService {
       throw new UnauthorizedException('Invalid login or password')
     }
     const accessToken = await this.tokensService.getAccessToken({ id: user.id, role: user.role })
-    console.log(user)
     const refreshToken = await this.tokensService.getRefreshToken(user.id, userAgent)
 
     return { accessToken, refreshToken }

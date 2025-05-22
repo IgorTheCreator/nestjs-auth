@@ -49,7 +49,6 @@ export class TokensService implements ITokensService {
       return refreshToken
     }
     const newToken = new Token({ userAgent, userId, expiresAt: dateFns.add(new Date(), { days: this.config.REFRESH_TOKEN_VALID }) })
-    console.log(newToken)
     const refreshToken = await this.tokensRepository.updateRefreshToken(newToken)
     return refreshToken
   }

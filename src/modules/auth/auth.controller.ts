@@ -44,7 +44,6 @@ export class AuthController {
   }
 
   private sendTokens(reply: FastifyReply, refreshToken: Token, accessToken: string) {
-    console.log(11, refreshToken)
     reply.setCookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken.token, {
       httpOnly: true,
       path: '/',

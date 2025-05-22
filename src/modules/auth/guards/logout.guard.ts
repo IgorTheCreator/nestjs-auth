@@ -6,7 +6,6 @@ export class LogoutGuard implements CanActivate {
   constructor(private readonly redis: RedisService) {}
   async canActivate(context: ExecutionContext) {
     const token = context.switchToHttp().getRequest().headers.authorization?.split(' ')[1]
-    console.log(token)
     if (await this.redis.get(token)) {
       return false
     }
