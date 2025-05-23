@@ -23,7 +23,10 @@ export class TokensService implements ITokensService {
   }
 
   async findRefreshTokenByUserIdAndUserAgent(userId: string, userAgent: string) {
-    const tokenFromDb = await this.tokensRepository.findRefreshTokenByUserIdAndUserAgent(userId, userAgent)
+    const tokenFromDb = await this.tokensRepository.findRefreshTokenByUserIdAndUserAgent(
+      userId,
+      userAgent,
+    )
     if (!tokenFromDb || tokenFromDb.expiresAt < new Date()) {
       return null
     }
@@ -44,11 +47,19 @@ export class TokensService implements ITokensService {
       userAgent,
     )
     if (!token) {
-      const newToken = new Token({ userAgent, userId, expiresAt: dateFns.add(new Date(), { days: this.config.REFRESH_TOKEN_VALID }) })
+      const newToken = new Token({
+        userAgent,
+        userId,
+        expiresAt: dateFns.add(new Date(), { days: this.config.REFRESH_TOKEN_VALID }),
+      })
       const refreshToken = await this.tokensRepository.createRefreshToken(newToken)
       return refreshToken
     }
-    const newToken = new Token({ userAgent, userId, expiresAt: dateFns.add(new Date(), { days: this.config.REFRESH_TOKEN_VALID }) })
+    const newToken = new Token({
+      userAgent,
+      userId,
+      expiresAt: dateFns.add(new Date(), { days: this.config.REFRESH_TOKEN_VALID }),
+    })
     const refreshToken = await this.tokensRepository.updateRefreshToken(newToken)
     return refreshToken
   }

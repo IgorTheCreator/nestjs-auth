@@ -1,4 +1,10 @@
-import { BadRequestException, ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { IUsersService, Users } from '../users/interfaces'
 import { IAuthService, LogoutTokens } from './interfaces'
 import { CredentialsDto } from './dto'
@@ -11,7 +17,7 @@ export class AuthService implements IAuthService {
   constructor(
     @Inject(Users) private readonly usersService: IUsersService,
     @Inject(Tokens) private readonly tokensService: ITokensService,
-    private readonly redis: RedisService
+    private readonly redis: RedisService,
   ) {}
 
   async signup(userAgent: string, { email, password }: CredentialsDto) {
@@ -52,7 +58,10 @@ export class AuthService implements IAuthService {
     if (!user) {
       throw new BadRequestException('User not found')
     }
-    const accessToken = await this.tokensService.getAccessToken({ id: refreshToken, role: user.role })
+    const accessToken = await this.tokensService.getAccessToken({
+      id: refreshToken,
+      role: user.role,
+    })
 
     return { accessToken, refreshToken: newRefreshToken }
   }

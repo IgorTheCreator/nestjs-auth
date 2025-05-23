@@ -11,8 +11,8 @@ export class TokensStorage implements ITokensRepository {
   async findRefreshTokenByToken(token: string) {
     const refreshToken = await this.db.refreshToken.findUnique({
       where: {
-        token
-      }
+        token,
+      },
     })
     return refreshToken
   }
@@ -21,15 +21,15 @@ export class TokensStorage implements ITokensRepository {
     const refreshToken = await this.db.refreshToken.findFirst({
       where: {
         userId,
-        userAgent
-      }
+        userAgent,
+      },
     })
     return refreshToken
   }
 
   async createRefreshToken(refreshToken: Token) {
     const newRefreshToken = await this.db.refreshToken.create({
-      data: refreshToken
+      data: refreshToken,
     })
     return newRefreshToken
   }
@@ -39,21 +39,23 @@ export class TokensStorage implements ITokensRepository {
       where: {
         userId_userAgent: {
           userAgent: token.userAgent!,
-          userId: token.userId!
-        }
+          userId: token.userId!,
+        },
       },
-      data: token
+      data: token,
     })
     return updatedRefreshToken
   }
 
   async deleteRefreshTokenByToken(token: string) {
-    await this.db.refreshToken.delete({
-      where: {
-        token
-      }
-    }).catch((e) => {
-      this.logger.warn(e)
-    })
+    await this.db.refreshToken
+      .delete({
+        where: {
+          token,
+        },
+      })
+      .catch((e) => {
+        this.logger.warn(e)
+      })
   }
 }

@@ -6,8 +6,8 @@ import { AppController } from './app.controller'
 import { ConfigModule } from './core/config/config.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
-import { RedisModule } from './core/redis/redis.module';
-import { PrismaModule } from './core/prisma/prisma.module';
+import { RedisModule } from './core/redis/redis.module'
+import { PrismaModule } from './core/prisma/prisma.module'
 import { JwtAuthGuard, RolesGuard } from './modules/auth/guards'
 
 @Module({
@@ -17,11 +17,11 @@ import { JwtAuthGuard, RolesGuard } from './modules/auth/guards'
       pinoHttp: {
         transport: process.stdout.isTTY
           ? {
-            target: 'pino-pretty',
-            options: {
-              singleLine: true,
-            },
-          }
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+              },
+            }
           : undefined,
       },
     }),
@@ -44,7 +44,7 @@ import { JwtAuthGuard, RolesGuard } from './modules/auth/guards'
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
-    }
+    },
   ],
 })
 export class AppModule {}

@@ -8,7 +8,7 @@ export class UsersStorage implements IUsersRepository {
   constructor(private readonly db: PrismaService) {}
   async save(user: User): Promise<Omit<User, 'hashPassword' | 'comparePassword'>> {
     const newUser = await this.db.user.create({
-      data: user
+      data: user,
     })
     return newUser
   }
@@ -16,8 +16,8 @@ export class UsersStorage implements IUsersRepository {
   async findById(id: string): Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null> {
     const user = await this.db.user.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     })
     return user
   }
@@ -25,8 +25,8 @@ export class UsersStorage implements IUsersRepository {
   async findByEmail(email: string): Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null> {
     const user = await this.db.user.findUnique({
       where: {
-        email
-      }
+        email,
+      },
     })
     return user
   }

@@ -6,7 +6,6 @@ import { LogoutGuard } from './modules/auth/guards'
 @ApiBearerAuth()
 @Controller()
 export class AppController {
-
   @Get('ping')
   @Public()
   ping() {
