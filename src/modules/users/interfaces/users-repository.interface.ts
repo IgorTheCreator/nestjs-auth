@@ -1,9 +1,9 @@
 import { User } from '../models'
 
 export interface IUsersRepository {
-  save: (user: User) => Promise<Omit<User, 'hashPassword' | 'comparePassword'>>
-  findById: (id: string) => Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null>
-  findByEmail: (email: string) => Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null>
+  save: (user: User) => Promise<User>
+  findById: (id: string) => Promise<User | null>
+  findByEmail: (email: string) => Promise<User | null>
 }
 
 export const UsersRepository = Symbol('IUsersRepository')
