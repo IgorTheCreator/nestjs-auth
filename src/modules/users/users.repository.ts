@@ -6,14 +6,14 @@ import { PrismaService } from 'src/core/prisma/prisma.service'
 @Injectable()
 export class UsersStorage implements IUsersRepository {
   constructor(private readonly db: PrismaService) {}
-  async save(user: User): Promise<Omit<User, 'hashPassword' | 'comparePassword'>> {
+  async save(user: User): Promise<User> {
     const newUser = await this.db.user.create({
       data: user,
     })
     return newUser
   }
 
-  async findById(id: string): Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null> {
+  async findById(id: string): Promise<User | null> {
     const user = await this.db.user.findUnique({
       where: {
         id,
@@ -22,7 +22,7 @@ export class UsersStorage implements IUsersRepository {
     return user
   }
 
-  async findByEmail(email: string): Promise<Omit<User, 'hashPassword' | 'comparePassword'> | null> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await this.db.user.findUnique({
       where: {
         email,
