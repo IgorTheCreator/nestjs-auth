@@ -11,7 +11,7 @@ datasource db {
 model RefreshToken {
   token     String   @id @unique
   userAgent String   @map("user_agent")
-  expiresAt DateTime
+  expiresAt DateTime @map("expires_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   userId    String   @map("user_id") @db.Uuid
