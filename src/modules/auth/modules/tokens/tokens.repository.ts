@@ -8,6 +8,17 @@ export class TokensStorage implements ITokensRepository {
   private readonly logger = new Logger(TokensStorage.name)
   constructor(private readonly db: PrismaService) {}
 
+  async deleteExpiredRefreshTokens() {
+    const { count } = await this.db.refreshToken.deleteMany({
+      where: {
+        expiresAt: {
+          lte: new Date()
+        }
+      }
+    })
+    return count
+  }
+
   async findRefreshTokenByToken(token: string) {
     const refreshToken = await this.db.refreshToken.findUnique({
       where: {

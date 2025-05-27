@@ -6,6 +6,7 @@ export interface ITokensRepository {
   createRefreshToken: (refreshToken: Token) => Promise<Token>
   updateRefreshToken: (refreshToken: Partial<Token>) => Promise<Token>
   deleteRefreshTokenByToken: (token: string) => Promise<void>
+  deleteExpiredRefreshTokens: () => Promise<number>
 }
 
 export const TokensRepository = Symbol('ITokensRepository')

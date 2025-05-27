@@ -9,27 +9,33 @@ import { UsersModule } from './modules/users/users.module'
 import { RedisModule } from './core/redis/redis.module'
 import { PrismaModule } from './core/prisma/prisma.module'
 import { JwtAuthGuard, RolesGuard } from './modules/auth/guards'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
+    // NestJS modules
+    ScheduleModule.forRoot(),
+
+    // Core modules
     ConfigModule,
+    RedisModule,
+    PrismaModule,
     LoggerModule.forRoot({
       pinoHttp: {
         transport: process.stdout.isTTY
           ? {
-              target: 'pino-pretty',
-              options: {
-                singleLine: true,
-              },
-            }
+            target: 'pino-pretty',
+            options: {
+              singleLine: true,
+            },
+          }
           : undefined,
       },
     }),
 
+    // Business modules
     AuthModule,
     UsersModule,
-    RedisModule,
-    PrismaModule,
   ],
   controllers: [AppController],
   providers: [
