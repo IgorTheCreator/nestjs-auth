@@ -24,11 +24,11 @@ import { ScheduleModule } from '@nestjs/schedule'
       pinoHttp: {
         transport: process.stdout.isTTY
           ? {
-            target: 'pino-pretty',
-            options: {
-              singleLine: true,
-            },
-          }
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+              },
+            }
           : undefined,
       },
     }),

@@ -12,9 +12,9 @@ export class TokensStorage implements ITokensRepository {
     const { count } = await this.db.refreshToken.deleteMany({
       where: {
         expiresAt: {
-          lte: new Date()
-        }
-      }
+          lte: new Date(),
+        },
+      },
     })
     return count
   }
