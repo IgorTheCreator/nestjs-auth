@@ -3,7 +3,11 @@ import { APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ZodValidationPipe } from 'nestjs-zod'
 import { LoggerModule } from 'nestjs-pino'
-import { makeCounterProvider, makeGaugeProvider, PrometheusModule } from "@willsoto/nestjs-prometheus";
+import {
+  makeCounterProvider,
+  makeGaugeProvider,
+  PrometheusModule,
+} from '@willsoto/nestjs-prometheus'
 import { AppController } from './app.controller'
 import { ConfigModule } from './core/config/config.module'
 import { AuthModule } from './modules/auth/auth.module'
@@ -34,16 +38,15 @@ import { MetricsMiddleware } from './metrics.middleware'
         },
         transport: process.stdout.isTTY
           ? {
-            target: 'pino-pretty',
-            options: {
-              singleLine: true,
-              colorize: true,
-            },
-          }
+              target: 'pino-pretty',
+              options: {
+                singleLine: true,
+                colorize: true,
+              },
+            }
           : undefined,
       },
     }),
-
 
     // Business modules
     AuthModule,
@@ -76,9 +79,12 @@ import { MetricsMiddleware } from './metrics.middleware'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(MetricsMiddleware).exclude({ path: '/metrics', method: RequestMethod.GET }).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL
-    })
+    consumer
+      .apply(MetricsMiddleware)
+      .exclude({ path: '/metrics', method: RequestMethod.GET })
+      .forRoutes({
+        path: '*',
+        method: RequestMethod.ALL,
+      })
   }
 }

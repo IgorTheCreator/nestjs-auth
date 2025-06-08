@@ -16,7 +16,7 @@ async function build() {
   })
   app.register(fastifyCookie)
 
-  app.useLogger(app.get(Logger));
+  app.useLogger(app.get(Logger))
 
   patchNestJsSwagger()
   const swaggerConfig = new DocumentBuilder()
