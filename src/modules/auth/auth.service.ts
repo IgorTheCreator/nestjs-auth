@@ -3,6 +3,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common'
 import { IUsersService, Users } from '../users/interfaces'
@@ -14,6 +15,8 @@ import { compare } from 'src/shared/functions'
 
 @Injectable()
 export class AuthService implements IAuthService {
+  private readonly logger = new Logger(AuthService.name)
+
   constructor(
     @Inject(Users) private readonly usersService: IUsersService,
     @Inject(Tokens) private readonly tokensService: ITokensService,
@@ -28,6 +31,8 @@ export class AuthService implements IAuthService {
     const user = await this.usersService.save({ email, password })
     const accessToken = await this.tokensService.getAccessToken({ id: user.id, role: user.role })
     const refreshToken = await this.tokensService.getRefreshToken(user.id, userAgent)
+
+    this.logger.log(`User created id: ${user.id}`)
 
     return { accessToken, refreshToken }
   }

@@ -2,8 +2,8 @@ import fastifyCookie from '@fastify/cookie'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { Logger } from 'nestjs-pino'
 import { patchNestJsSwagger } from 'nestjs-zod'
+import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 import { ConfigService } from './core/config/config.service'
 
@@ -15,7 +15,8 @@ async function build() {
     bufferLogs: true,
   })
   app.register(fastifyCookie)
-  app.useLogger(app.get(Logger))
+
+  app.useLogger(app.get(Logger));
 
   patchNestJsSwagger()
   const swaggerConfig = new DocumentBuilder()
@@ -24,7 +25,7 @@ async function build() {
     .addBearerAuth()
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig)
-  SwaggerModule.setup('api', app, documentFactory)
+  SwaggerModule.setup('docs', app, documentFactory)
 
   app.enableShutdownHooks()
 

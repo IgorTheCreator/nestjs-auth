@@ -1,0 +1,35 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # отключаем безопасность для упрощения
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m' # задаем ограничение памяти
+    ports:
+      - '9200:9200' # порт Elasticsearch
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.14.0
+    container_name: logstash
+    ports:
+      - '5000:5000' # TCP порт, на который будет отправляться лог из приложения
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline # конфиг пайплайна
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.0
+    container_name: kibana
+    ports:
+      - '5601:5601' # веб-интерфейс Kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
+volumes:
+  esdata:

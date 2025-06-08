@@ -13,9 +13,15 @@ export class AppController {
   }
 
   @UseGuards(LogoutGuard)
-  @Get('test')
+  @Get('protected-test')
   @Role('ADMIN')
-  test() {
-    return []
+  protectedTest() {
+    return 'Sensitive data'
+  }
+
+  @Public()
+  @Get('public-test')
+  publicTest() {
+    return 'Public data'
   }
 }
