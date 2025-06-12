@@ -19,7 +19,7 @@ async function build() {
   app.register(fastifyRateLimit, {
     max: 100,
     timeWindow: '1 minute',
-    ban: 1
+    ban: 1,
   })
   app.useLogger(app.get(Logger))
 
