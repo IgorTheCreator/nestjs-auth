@@ -6,6 +6,7 @@ import { patchNestJsSwagger } from 'nestjs-zod'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 import { ConfigService } from './core/config/config.service'
+import fastifyRateLimit from '@fastify/rate-limit'
 
 async function build() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
@@ -15,7 +16,11 @@ async function build() {
     bufferLogs: true,
   })
   app.register(fastifyCookie)
-
+  app.register(fastifyRateLimit, {
+    max: 100,
+    timeWindow: '1 minute',
+    ban: 1
+  })
   app.useLogger(app.get(Logger))
 
   patchNestJsSwagger()
