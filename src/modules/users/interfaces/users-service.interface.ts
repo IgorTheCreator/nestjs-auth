@@ -6,6 +6,7 @@ export interface IUsersService {
   save: (user: UsersData) => Promise<User>
   findById: (id: string) => Promise<User | null>
   findByEmail: (email: string) => Promise<User | null>
+  findAll: () => Promise<User[]>
 }
 
 export const Users = Symbol('IUsersService')

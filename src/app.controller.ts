@@ -1,11 +1,14 @@
-import { Controller, Get, UseGuards } from '@nestjs/common'
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth } from '@nestjs/swagger'
 import { Public, Role } from './shared/decorators'
 import { LogoutGuard } from './modules/auth/guards'
+import { IUsersService, Users } from './modules/users/interfaces'
 
 @ApiBearerAuth()
 @Controller()
 export class AppController {
+  constructor(@Inject(Users) private readonly usersService: IUsersService) {}
+
   @Get('ping')
   @Public()
   ping() {
@@ -22,6 +25,6 @@ export class AppController {
   @Public()
   @Get('public-test')
   publicTest() {
-    return 'Public data'
+    return this.usersService.findAll()
   }
 }

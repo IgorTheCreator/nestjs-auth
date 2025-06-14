@@ -30,4 +30,9 @@ export class UsersStorage implements IUsersRepository {
     })
     return user
   }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.db.user.findMany()
+    return users
+  }
 }

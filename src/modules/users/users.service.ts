@@ -21,4 +21,9 @@ export class UsersService implements IUsersService {
     const user = await this.usersRepository.findByEmail(email)
     return user
   }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.usersRepository.findAll()
+    return users
+  }
 }
