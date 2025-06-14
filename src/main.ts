@@ -17,7 +17,7 @@ async function build() {
   })
   app.register(fastifyCookie)
   app.register(fastifyRateLimit, {
-    max: 100,
+    max: 90,
     timeWindow: '1 minute',
     ban: 1,
   })
